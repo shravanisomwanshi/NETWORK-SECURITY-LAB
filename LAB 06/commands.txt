@@ -1,0 +1,780 @@
+============================================================
+        802.1Q TRUNK + NATIVE VLAN CONFIGURATION
+                    COMMANDS FILE
+============================================================
+
+TOPOLOGY:
+Cisco Packet Tracer
+
+DEVICES:
+- Switch1 : Cisco 2960
+- Switch2 : Cisco 2960
+- PC0
+- PC1
+
+============================================================
+                    TOPOLOGY CONNECTION
+============================================================
+
+Switch1 Fa0/1  <---------->  Switch2 Fa0/1
+Switch1 Fa0/2  <---------->  Switch2 Fa0/2
+
+Switch1 Fa0/3  <---------->  PC0
+Switch2 Fa0/3  <---------->  PC1
+
+
+============================================================
+                    VLAN INFORMATION
+============================================================
+
+VLAN 10
+Name    : IT
+Purpose : IT Department
+
+VLAN 20
+Name    : HR
+Purpose : HR Department
+
+VLAN 99
+Name    : NATIVE
+Purpose : Native VLAN for 802.1Q Trunk
+
+
+============================================================
+              SWITCH 1 CONFIGURATION
+============================================================
+
+Device:
+Switch1
+
+Configured VLANs:
+- VLAN 10 → IT
+- VLAN 20 → HR
+- VLAN 99 → NATIVE
+
+Configured Trunk Interfaces:
+- FastEthernet0/1
+- FastEthernet0/2
+
+Native VLAN:
+- VLAN 99
+
+
+------------------------------------------------------------
+1. ENTER PRIVILEGED EXEC MODE
+------------------------------------------------------------
+
+Command:
+
+enable
+
+Purpose:
+Enters privileged EXEC mode on Switch1.
+
+
+------------------------------------------------------------
+2. ENTER GLOBAL CONFIGURATION MODE
+------------------------------------------------------------
+
+Command:
+
+configure terminal
+
+Purpose:
+Enters global configuration mode.
+
+
+------------------------------------------------------------
+3. CREATE VLAN 10
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+VLAN ID:
+10
+
+VLAN Name:
+IT
+
+Commands:
+
+vlan 10
+name IT
+exit
+
+Purpose:
+Creates VLAN 10 and assigns the name IT.
+
+
+------------------------------------------------------------
+4. CREATE VLAN 20
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+VLAN ID:
+20
+
+VLAN Name:
+HR
+
+Commands:
+
+vlan 20
+name HR
+exit
+
+Purpose:
+Creates VLAN 20 and assigns the name HR.
+
+
+------------------------------------------------------------
+5. CREATE VLAN 99
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+VLAN ID:
+99
+
+VLAN Name:
+NATIVE
+
+Commands:
+
+vlan 99
+name NATIVE
+exit
+
+Purpose:
+Creates VLAN 99 which will be used as the Native VLAN.
+
+
+------------------------------------------------------------
+6. VERIFY VLAN CONFIGURATION
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+Command:
+
+do show vlan
+
+OR:
+
+do show vlan brief
+
+Purpose:
+Displays the VLANs configured on Switch1.
+
+Expected VLANs:
+
+10    IT
+20    HR
+99    NATIVE
+
+
+------------------------------------------------------------
+7. CONFIGURE Fa0/1 AND Fa0/2 AS TRUNK
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+Interfaces:
+
+Fa0/1
+Fa0/2
+
+Command:
+
+interface range fa0/1-2
+switchport mode trunk
+exit
+
+Purpose:
+Configures Fa0/1 and Fa0/2 as trunk interfaces.
+
+These interfaces connect Switch1 with Switch2
+and carry traffic belonging to multiple VLANs.
+
+
+------------------------------------------------------------
+8. VERIFY TRUNK CONFIGURATION
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+Command:
+
+do show interfaces trunk
+
+Purpose:
+Verifies whether Fa0/1 and Fa0/2 are operating
+as trunk ports.
+
+Expected:
+
+Fa0/1 → trunking
+Fa0/2 → trunking
+
+
+------------------------------------------------------------
+9. CONFIGURE NATIVE VLAN 99
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+Interfaces:
+
+Fa0/1
+Fa0/2
+
+Command:
+
+interface range fa0/1-2
+switchport trunk native vlan 99
+exit
+
+Purpose:
+Configures VLAN 99 as the Native VLAN on both
+trunk interfaces.
+
+
+------------------------------------------------------------
+10. VERIFY NATIVE VLAN
+------------------------------------------------------------
+
+Configuration:
+Switch1
+
+Command:
+
+do show interfaces trunk
+
+Purpose:
+Verifies the Native VLAN configured on the trunk.
+
+Expected:
+
+Native VLAN: 99
+
+
+------------------------------------------------------------
+11. EXIT CONFIGURATION MODE
+------------------------------------------------------------
+
+Command:
+
+end
+
+Purpose:
+Returns to privileged EXEC mode.
+
+
+------------------------------------------------------------
+12. SAVE SWITCH1 CONFIGURATION
+------------------------------------------------------------
+
+Command:
+
+write memory
+
+Alternative:
+
+copy running-config startup-config
+
+Purpose:
+Saves the running configuration into startup configuration.
+
+
+============================================================
+              SWITCH 2 CONFIGURATION
+============================================================
+
+Device:
+Switch2
+
+Configured VLANs:
+- VLAN 10 → IT
+- VLAN 20 → HR
+- VLAN 99 → NATIVE
+
+Configured Trunk Interfaces:
+- FastEthernet0/1
+- FastEthernet0/2
+
+Native VLAN:
+- VLAN 99
+
+
+------------------------------------------------------------
+1. ENTER PRIVILEGED EXEC MODE
+------------------------------------------------------------
+
+Command:
+
+enable
+
+Purpose:
+Enters privileged EXEC mode on Switch2.
+
+
+------------------------------------------------------------
+2. ENTER GLOBAL CONFIGURATION MODE
+------------------------------------------------------------
+
+Command:
+
+configure terminal
+
+Purpose:
+Enters global configuration mode.
+
+
+------------------------------------------------------------
+3. CREATE VLAN 10
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+VLAN ID:
+10
+
+VLAN Name:
+IT
+
+Commands:
+
+vlan 10
+name IT
+exit
+
+Purpose:
+Creates VLAN 10 and assigns the name IT.
+
+
+------------------------------------------------------------
+4. CREATE VLAN 20
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+VLAN ID:
+20
+
+VLAN Name:
+HR
+
+Commands:
+
+vlan 20
+name HR
+exit
+
+Purpose:
+Creates VLAN 20 and assigns the name HR.
+
+
+------------------------------------------------------------
+5. CREATE VLAN 99
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+VLAN ID:
+99
+
+VLAN Name:
+NATIVE
+
+Commands:
+
+vlan 99
+name NATIVE
+exit
+
+Purpose:
+Creates VLAN 99 which will be used as the Native VLAN.
+
+
+------------------------------------------------------------
+6. VERIFY VLAN CONFIGURATION
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+Command:
+
+do show vlan
+
+OR:
+
+do show vlan brief
+
+Purpose:
+Displays the VLANs configured on Switch2.
+
+Expected VLANs:
+
+10    IT
+20    HR
+99    NATIVE
+
+
+------------------------------------------------------------
+7. CONFIGURE Fa0/1 AND Fa0/2 AS TRUNK
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+Interfaces:
+
+Fa0/1
+Fa0/2
+
+Command:
+
+interface range fa0/1-2
+switchport mode trunk
+exit
+
+Purpose:
+Configures Fa0/1 and Fa0/2 as trunk interfaces.
+
+These interfaces connect Switch2 with Switch1
+and carry traffic belonging to multiple VLANs.
+
+
+------------------------------------------------------------
+8. VERIFY TRUNK CONFIGURATION
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+Command:
+
+do show interfaces trunk
+
+Purpose:
+Verifies whether Fa0/1 and Fa0/2 are operating
+as trunk ports.
+
+Expected:
+
+Fa0/1 → trunking
+Fa0/2 → trunking
+
+
+------------------------------------------------------------
+9. CONFIGURE NATIVE VLAN 99
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+Interfaces:
+
+Fa0/1
+Fa0/2
+
+Command:
+
+interface range fa0/1-2
+switchport trunk native vlan 99
+exit
+
+Purpose:
+Configures VLAN 99 as the Native VLAN on both
+trunk interfaces.
+
+
+------------------------------------------------------------
+10. VERIFY NATIVE VLAN
+------------------------------------------------------------
+
+Configuration:
+Switch2
+
+Command:
+
+do show interfaces trunk
+
+Purpose:
+Verifies the Native VLAN configured on the trunk.
+
+Expected:
+
+Native VLAN: 99
+
+
+------------------------------------------------------------
+11. EXIT CONFIGURATION MODE
+------------------------------------------------------------
+
+Command:
+
+end
+
+Purpose:
+Returns to privileged EXEC mode.
+
+
+------------------------------------------------------------
+12. SAVE SWITCH2 CONFIGURATION
+------------------------------------------------------------
+
+Command:
+
+write memory
+
+Alternative:
+
+copy running-config startup-config
+
+Purpose:
+Saves the running configuration into startup configuration.
+
+
+============================================================
+              COMPLETE SWITCH1 COMMANDS
+============================================================
+
+enable
+configure terminal
+
+vlan 10
+name IT
+exit
+
+vlan 20
+name HR
+exit
+
+vlan 99
+name NATIVE
+exit
+
+do show vlan
+
+interface range fa0/1-2
+switchport mode trunk
+exit
+
+do show interfaces trunk
+
+interface range fa0/1-2
+switchport trunk native vlan 99
+exit
+
+do show interfaces trunk
+
+end
+write memory
+
+
+============================================================
+              COMPLETE SWITCH2 COMMANDS
+============================================================
+
+enable
+configure terminal
+
+vlan 10
+name IT
+exit
+
+vlan 20
+name HR
+exit
+
+vlan 99
+name NATIVE
+exit
+
+do show vlan
+
+interface range fa0/1-2
+switchport mode trunk
+exit
+
+do show interfaces trunk
+
+interface range fa0/1-2
+switchport trunk native vlan 99
+exit
+
+do show interfaces trunk
+
+end
+write memory
+
+
+============================================================
+              FINAL VERIFICATION COMMANDS
+============================================================
+
+These commands can be used on BOTH switches.
+
+
+1. DISPLAY VLAN CONFIGURATION
+
+show vlan brief
+
+Purpose:
+Checks VLAN IDs, names, status and assigned ports.
+
+
+2. DISPLAY TRUNK CONFIGURATION
+
+show interfaces trunk
+
+Purpose:
+Checks:
+
+- Trunk interfaces
+- Trunk status
+- Encapsulation
+- Native VLAN
+- Allowed VLANs
+
+
+3. DISPLAY RUNNING CONFIGURATION
+
+show running-config
+
+Purpose:
+Displays the current active configuration.
+
+
+4. DISPLAY STARTUP CONFIGURATION
+
+show startup-config
+
+Purpose:
+Displays the configuration saved in NVRAM.
+
+
+5. DISPLAY INTERFACE STATUS
+
+show interfaces status
+
+Purpose:
+Displays the operational status of switch interfaces.
+
+
+============================================================
+              EXPECTED FINAL CONFIGURATION
+============================================================
+
+SWITCH1:
+
+VLAN 10 → IT
+VLAN 20 → HR
+VLAN 99 → NATIVE
+
+Fa0/1 → TRUNK → Native VLAN 99
+Fa0/2 → TRUNK → Native VLAN 99
+
+
+SWITCH2:
+
+VLAN 10 → IT
+VLAN 20 → HR
+VLAN 99 → NATIVE
+
+Fa0/1 → TRUNK → Native VLAN 99
+Fa0/2 → TRUNK → Native VLAN 99
+
+
+============================================================
+              IMPORTANT VERIFICATION
+============================================================
+
+Run:
+
+show interfaces trunk
+
+Expected:
+
+Port      Status
+Fa0/1     trunking
+Fa0/2     trunking
+
+Native VLAN:
+
+99
+
+
+============================================================
+              NATIVE VLAN MISMATCH
+============================================================
+
+If the following error appears:
+
+%CDP-4-NATIVE_VLAN_MISMATCH
+
+it means that both ends of the trunk are configured
+with different Native VLANs.
+
+Check using:
+
+show interfaces trunk
+
+
+Correct configuration on BOTH switches:
+
+interface range fa0/1-2
+switchport trunk native vlan 99
+exit
+
+
+Both sides of every trunk link must have the same
+Native VLAN.
+
+
+============================================================
+                    LAB SUMMARY
+============================================================
+
+VLAN 10:
+IT
+
+VLAN 20:
+HR
+
+VLAN 99:
+NATIVE
+
+Trunk Interfaces:
+
+Switch1:
+Fa0/1
+Fa0/2
+
+Switch2:
+Fa0/1
+Fa0/2
+
+Native VLAN:
+99
+
+Protocol:
+IEEE 802.1Q
+
+
+============================================================
+                    END OF FILE
+============================================================
