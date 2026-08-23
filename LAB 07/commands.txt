@@ -1,0 +1,127 @@
+==================================================
+REMOTE ACCESS USING TELNET
+Cisco Packet Tracer
+==================================================
+
+ROUTER CONFIGURATION
+--------------------
+
+# Router G0/0 - Admin Network
+enable
+configure terminal
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+
+# Router G0/1 - Remote Network
+interface g0/1
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit
+
+# Verify Router
+do show ip interface brief
+end
+
+
+SWITCH CONFIGURATION
+--------------------
+
+# Hostname
+enable
+configure terminal
+hostname S1
+
+# VLAN 1 - Switch Management IP
+interface vlan 1
+ip address 192.168.2.254 255.255.255.0
+no shutdown
+exit
+
+# Default Gateway
+ip default-gateway 192.168.2.1
+
+# Local User for Telnet
+username admin password cisco
+
+# Enable Password
+enable password cisco
+
+# Telnet Configuration
+line vty 0 15
+login local
+transport input telnet
+exit
+
+# Verify Switch
+do show ip interface brief
+do show running-config
+
+end
+
+
+PC CONFIGURATION
+----------------
+
+ADMIN-PC:
+IP       : 192.168.1.10
+MASK     : 255.255.255.0
+GATEWAY  : 192.168.1.1
+
+USER-1:
+IP       : 192.168.2.10
+MASK     : 255.255.255.0
+GATEWAY  : 192.168.2.1
+
+USER-2:
+IP       : 192.168.2.20
+MASK     : 255.255.255.0
+GATEWAY  : 192.168.2.1
+
+
+CONNECTIVITY TEST
+-----------------
+
+ping 192.168.1.1
+ping 192.168.2.1
+ping 192.168.2.254
+
+
+TELNET ACCESS
+-------------
+
+# From ADMIN-PC Command Prompt:
+
+telnet 192.168.2.254
+
+Username: ADMIN
+Password: CISCO
+
+# Enter privileged mode:
+
+enable
+Password: CISCO
+
+
+SAVE CONFIGURATION
+------------------
+
+write memory
+
+OR
+
+copy running-config startup-config
+
+
+VERIFICATION
+------------
+
+show ip interface brief
+show running-config
+show users
+
+
+==================================================
+END
+==================================================
