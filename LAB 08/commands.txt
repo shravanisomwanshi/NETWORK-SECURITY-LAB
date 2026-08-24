@@ -1,0 +1,98 @@
+
+---
+
+# 📄 `commands.txt` — SHORT VERSION
+
+```text
+========================================
+REMOTE ACCESS USING SSH
+========================================
+
+ROUTER
+------
+
+# G0/0 - Admin Network
+enable
+conf t
+int g0/0
+ip address 192.168.1.1 255.255.255.0
+no shut
+exit
+
+# G0/1 - Switch Network
+int g0/1
+ip address 192.168.2.1 255.255.255.0
+no shut
+exit
+
+do show ip int brief
+do wr
+end
+
+
+SWITCH S1
+---------
+
+# Management VLAN
+enable
+conf t
+int vlan 1
+ip address 192.168.2.254 255.255.255.0
+no shut
+exit
+
+# Gateway & Hostname
+ip default-gateway 192.168.2.1
+hostname S1
+ip domain-name CISCO.COM
+
+# SSH Authentication
+enable password CISCO
+username ADMIN password CISCO
+ip ssh version 2
+
+# Generate RSA Key
+crypto key generate rsa
+# Choose 1024 bits
+
+# VTY - SSH Only
+line vty 0 15
+login local
+transport input ssh
+exit
+
+do show ip ssh
+do show ip int brief
+do show running-config
+do wr
+end
+
+
+PC CONFIGURATION
+----------------
+
+ADMIN-PC
+IP:      192.168.1.10
+MASK:    255.255.255.0
+GATEWAY: 192.168.1.1
+
+USER-1
+IP:      192.168.2.10
+MASK:    255.255.255.0
+GATEWAY: 192.168.2.1
+
+USER-2
+IP:      192.168.2.20
+MASK:    255.255.255.0
+GATEWAY: 192.168.2.1
+
+
+VERIFICATION
+------------
+
+ping 192.168.2.254
+
+ssh -l admin 192.168.2.254
+
+# Username: ADMIN
+# Password: CISCO
