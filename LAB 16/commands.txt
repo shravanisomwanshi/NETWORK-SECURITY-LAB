@@ -1,0 +1,135 @@
+LAB 16 — IPSG + DAI + DHCP SNOOPING
+================================================
+
+DEVICE 1: SWITCH
+Purpose: Configure DHCP Snooping, DAI and IP Source Guard
+------------------------------------------------------------
+
+STEP 1 — Enter privileged and global configuration mode
+
+enable
+configure terminal
+
+
+STEP 2 — ENABLE DHCP SNOOPING
+
+ip dhcp snooping
+
+Purpose:
+Enables DHCP Snooping on the switch.
+
+
+STEP 3 — TRUST DHCP INTERFACES
+
+interface range fastethernet 0/1-2
+ip dhcp snooping trust
+exit
+
+Purpose:
+Fa0/1 and Fa0/2 are configured as trusted DHCP Snooping interfaces
+according to the Packet Tracer topology.
+
+
+STEP 4 — VERIFY VLAN CONFIGURATION
+
+do show vlan
+
+
+STEP 5 — ENABLE DHCP SNOOPING FOR VLAN 1
+
+ip dhcp snooping vlan 1
+
+
+STEP 6 — SAVE CONFIGURATION
+
+do write
+
+
+================================================
+DYNAMIC ARP INSPECTION (DAI)
+================================================
+
+STEP 7 — Enter configuration mode
+
+enable
+configure terminal
+
+
+STEP 8 — ENABLE ARP INSPECTION FOR VLAN 1
+
+ip arp inspection vlan 1
+
+
+STEP 9 — VERIFY STARTUP CONFIGURATION
+
+do show start
+
+
+STEP 10 — CONFIGURE ARP INSPECTION TRUST
+
+interface range fastethernet 0/1-2
+ip arp inspection trust
+exit
+
+Purpose:
+Fa0/1 and Fa0/2 are configured as trusted interfaces for
+Dynamic ARP Inspection according to the topology.
+
+
+STEP 11 — VERIFY ARP INSPECTION
+
+do show ip arp inspection
+
+
+================================================
+IP SOURCE GUARD (IPSG)
+================================================
+
+STEP 12 — CONFIGURE IP SOURCE GUARD
+
+interface range fastethernet 0/1-2
+ip verify source
+exit
+
+Purpose:
+Enables IP Source Guard on the specified interfaces.
+
+
+================================================
+FINAL VERIFICATION
+================================================
+
+do show ip arp inspection
+do show ip arp inspection interfaces
+do show running-config
+
+
+================================================
+CONFIGURATION SUMMARY
+================================================
+
+DHCP Snooping:
+    ip dhcp snooping
+    ip dhcp snooping vlan 1
+    Fa0/1-2 → ip dhcp snooping trust
+
+Dynamic ARP Inspection:
+    ip arp inspection vlan 1
+    Fa0/1-2 → ip arp inspection trust
+
+IP Source Guard:
+    Fa0/1-2 → ip verify source
+
+VLAN:
+    VLAN 1
+
+Legitimate DHCP Server:
+    IP: 192.168.1.100
+    Mask: 255.255.255.0
+    Gateway: 192.168.1.1
+    Pool: TESTPOOL
+    DHCP IP: 192.168.1.10
+
+================================================
+END OF LAB 16
+================================================
