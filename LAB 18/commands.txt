@@ -1,0 +1,62 @@
+LAB 18 – ACL FOR VTY INTERFACES
+================================
+
+SWITCH: TEST-SSH
+
+enable
+configure terminal
+
+! Configure switch management interface
+interface vlan 1
+no shutdown
+ip address 192.168.2.254 255.255.255.0
+exit
+
+! Configure default gateway
+ip default-gateway 192.168.2.1
+
+! Connectivity verification
+ping 192.168.2.1
+ping 192.168.1.5
+
+! SSH configuration
+configure terminal
+hostname TEST-SSH
+enable password CISCO
+ip domain-name CISCO.COM
+username CISCO password CISCO
+
+! Generate RSA key for SSH
+crypto key generate rsa
+
+! Configure VTY lines
+line vty 0 15
+login local
+transport input ssh
+exit
+
+! Use SSH version 2
+ip ssh version 2
+
+! Create ACL 10
+access-list 10 permit host 192.168.1.5
+access-list 10 deny any
+
+! Apply ACL to VTY interfaces
+line vty 0 15
+access-class 10 in
+exit
+
+! Verification
+show ip interface brief
+show ip ssh
+show access-lists
+show running-config
+
+! SSH test from SysADMIN-PC
+ssh -l CISCO 192.168.2.254
+
+ACL LOGIC
+---------
+192.168.1.5  -> PERMIT
+Any other IP -> DENY
