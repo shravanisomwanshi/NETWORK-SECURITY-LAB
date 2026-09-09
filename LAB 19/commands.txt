@@ -1,0 +1,62 @@
+LAB 19 — LAYER 3 MULTILAYER SWITCH CONFIGURATION
+====================================================
+
+MULTILAYER SWITCH0
+-------------------
+
+enable
+configure terminal
+
+! Enable Layer 3 routing
+ip routing
+
+! Configure the physical interface as a Layer 3 routed port
+interface gigabitEthernet 1/0/1
+no switchport
+ip address 192.168.1.2 255.255.255.0
+exit
+
+! Save configuration
+do wr
+end
+
+
+VERIFICATION FROM MULTILAYER SWITCH0
+--------------------------------------
+
+! Test connectivity to Multilayer Switch1
+ping 192.168.2.2
+
+
+MULTILAYER SWITCH1
+-------------------
+
+enable
+configure terminal
+
+! Enable Layer 3 routing
+ip routing
+
+! Configure the physical interface as a Layer 3 routed port
+interface gigabitEthernet 1/0/1
+no switchport
+ip address 192.168.2.2 255.255.255.0
+exit
+
+! Save configuration
+do wr
+end
+
+
+VERIFICATION FROM MULTILAYER SWITCH1
+--------------------------------------
+
+! Test connectivity to Multilayer Switch0
+ping 192.168.1.2
+
+
+USEFUL VERIFICATION COMMANDS
+----------------------------
+
+show ip interface brief
+show ip route
