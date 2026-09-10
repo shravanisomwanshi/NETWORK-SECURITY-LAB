@@ -1,0 +1,89 @@
+LAB 20 — LAYER 3 ETHERCHANNEL
+USING LACP / PAgP / ON MODES
+================================
+
+MULTILAYER SWITCH0
+-------------------
+
+enable
+configure terminal
+
+! Enable Layer 3 routing
+ip routing
+
+! Convert member interfaces to Layer 3 routed ports
+interface range gigabitEthernet 1/0/1-6
+no switchport
+exit
+
+! EtherChannel Group 1 — LACP Active
+interface range gigabitEthernet 1/0/1-3
+channel-group 1 mode active
+exit
+
+! Configure Layer 3 Port-Channel 1
+interface port-channel 1
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+
+! EtherChannel Group 2
+interface range gigabitEthernet 1/0/4-6
+channel-group 2 mode active
+exit
+
+! Configure Layer 3 Port-Channel 2
+interface port-channel 2
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit
+
+! Save configuration
+do wr
+
+! Reload as shown in the source configuration
+do reload
+
+! EtherChannel verification
+do show ether
+
+
+MULTILAYER SWITCH1
+-------------------
+
+enable
+configure terminal
+
+! Enable Layer 3 routing
+ip routing
+
+! Convert member interfaces to Layer 3 routed ports
+interface range gigabitEthernet 1/0/1-6
+no switchport
+exit
+
+! EtherChannel Group 1 — LACP Passive
+interface range gigabitEthernet 1/0/1-3
+channel-group 1 mode passive
+exit
+
+! Configure Layer 3 Port-Channel 1
+interface port-channel 1
+ip address 192.168.1.2 255.255.255.0
+exit
+
+! EtherChannel Group 3 — Static ON
+interface range gigabitEthernet 1/0/4-6
+channel-group 3 mode on
+exit
+
+! Configure Layer 3 Port-Channel 3
+interface port-channel 3
+ip address 192.168.3.1 255.255.255.0
+exit
+
+! Save configuration
+do wr
+
+! Reload as shown in the source configuration
+do reload
